@@ -39,6 +39,7 @@ export interface LegserviceArticle {
   verplichtServices?: string[]; // Array van productCodes die verplicht zijn bij deze service
   keuzeServices?: string[]; // Array van productCodes waarvan minimaal 1 gekozen moet worden
   keuzeServicesOptional?: string[]; // Array van productCodes voor optionele keuze (popup, maar niet verplicht)
+  aanbevolen?: boolean; // Aanbevolen artikel: ja/nee
 }
 
 // Legservice artikelen zonder "< 35" prefix (35-9999 m²)
@@ -358,6 +359,7 @@ export const legserviceArticles: LegserviceArticle[] = [
     description: "Vloerverwarming Installeren - Complete installatie van vloerverwarming systeem",
     serviceType: "Legservice",
     isMandatory: false,
+    aanbevolen: true,
     category: "Installatie",
     eenheid: "M2",
     configuratorName: "VOORBEREIDEN-10650",
@@ -405,6 +407,7 @@ export const legserviceArticles: LegserviceArticle[] = [
     description: "Premium Verwarmingskabel - Voor optimale warmteverdeling",
     serviceType: "Legservice",
     isMandatory: false,
+    aanbevolen: true,
     category: "Vloerverwarming Sub-services",
     eenheid: "M2",
     van: 35,
@@ -676,6 +679,7 @@ export const legserviceArticles: LegserviceArticle[] = [
     description: "Ondervloer Plaatsen - Plaatsen van ondervloer voor extra comfort en isolatie",
     serviceType: "Legservice",
     isMandatory: false,
+    aanbevolen: true,
     category: "Installatie",
     eenheid: "M2",
     configuratorName: "VOORBEREIDEN-10609",
@@ -811,6 +815,7 @@ export const legserviceArticles: LegserviceArticle[] = [
     description: "Egaliseren tot 3mm",
     serviceType: "voorbereiden",
     isMandatory: false,
+    aanbevolen: true,
     category: "Voorbereiden",
     eenheid: "M2",
     configuratorName: "VOORBEREIDEN-10623",
@@ -843,6 +848,7 @@ export const legserviceArticles: LegserviceArticle[] = [
     description: "Egaliseren tot 10mm",
     serviceType: "voorbereiden",
     isMandatory: false,
+    aanbevolen: true,
     category: "Voorbereiden",
     eenheid: "M2",
     configuratorName: "VOORBEREIDEN-10625",

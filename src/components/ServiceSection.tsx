@@ -1102,12 +1102,19 @@ export function ServiceSection({
       <>
         <div className="space-y-4 p-4 border rounded-lg bg-gray-50">
           <div>
-            <button 
-              onClick={handleOpenArticleDetail}
-              className="text-[#2d4724] hover:text-[#1f3319] underline text-sm text-left"
-            >
-              {title}
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleOpenArticleDetail}
+                className="text-[#2d4724] hover:text-[#1f3319] underline text-sm text-left"
+              >
+                {title}
+              </button>
+              {article?.aanbevolen && (
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 whitespace-nowrap">
+                  {language === 'nl' ? 'Aanbevolen' : 'Recommended'}
+                </span>
+              )}
+            </div>
             {selectedPlintProduct && (
               <div className="text-xs text-green-700 font-medium mt-1">
                 {language === 'nl' ? 'Geselecteerd product: ' : 'Selected product: '}
@@ -1421,16 +1428,23 @@ export function ServiceSection({
                     {/* Article Header */}
                     <div className="flex items-start gap-2 mb-3">
                       <div className="flex-1">
-                        <button
-                          onClick={() => {
-                            if (onOpenServiceArticleDetail) {
-                              onOpenServiceArticleDetail(depArticle);
-                            }
-                          }}
-                          className="text-[#2d4724] hover:text-[#1f3319] underline text-sm text-left font-medium"
-                        >
-                          {depArticle.productCode} - {depArticle.description}
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => {
+                              if (onOpenServiceArticleDetail) {
+                                onOpenServiceArticleDetail(depArticle);
+                              }
+                            }}
+                            className="text-[#2d4724] hover:text-[#1f3319] underline text-sm text-left font-medium"
+                          >
+                            {depArticle.productCode} - {depArticle.description}
+                          </button>
+                          {depArticle.aanbevolen && (
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 whitespace-nowrap">
+                              {language === 'nl' ? 'Aanbevolen' : 'Recommended'}
+                            </span>
+                          )}
+                        </div>
                         {depArticle.subcategorie && (
                           <div className="text-xs text-gray-500 mt-1">
                             {depArticle.subcategorie}
@@ -1630,13 +1644,20 @@ export function ServiceSection({
     <>
       <div className="space-y-4 p-4 border rounded-lg bg-gray-50">
         <div>
-          <button 
-            onClick={handleOpenArticleDetail}
-            className="text-[#2d4724] hover:text-[#1f3319] underline text-sm text-left"
-          >
-            {title}
-          </button>
-          
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleOpenArticleDetail}
+              className="text-[#2d4724] hover:text-[#1f3319] underline text-sm text-left"
+            >
+              {title}
+            </button>
+            {article?.aanbevolen && (
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 whitespace-nowrap">
+                {language === 'nl' ? 'Aanbevolen' : 'Recommended'}
+              </span>
+            )}
+          </div>
+
           {/* Article Information Display - 4 lines as shown in screenshot - COLLAPSIBLE */}
           {article && (
             <div className="mt-2 border border-gray-300 rounded-lg overflow-hidden">
@@ -2517,16 +2538,23 @@ export function ServiceSection({
                   {/* Article Header */}
                   <div className="flex items-start gap-2 mb-3">
                     <div className="flex-1">
-                      <button
-                        onClick={() => {
-                          if (onOpenServiceArticleDetail) {
-                            onOpenServiceArticleDetail(depArticle);
-                          }
-                        }}
-                        className="text-[#2d4724] hover:text-[#1f3319] underline text-sm text-left font-medium"
-                      >
-                        {depArticle.productCode} - {depArticle.description}
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => {
+                            if (onOpenServiceArticleDetail) {
+                              onOpenServiceArticleDetail(depArticle);
+                            }
+                          }}
+                          className="text-[#2d4724] hover:text-[#1f3319] underline text-sm text-left font-medium"
+                        >
+                          {depArticle.productCode} - {depArticle.description}
+                        </button>
+                        {depArticle.aanbevolen && (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 whitespace-nowrap">
+                            {language === 'nl' ? 'Aanbevolen' : 'Recommended'}
+                          </span>
+                        )}
+                      </div>
                       {depArticle && (
                         <div className="text-xs text-gray-600 mt-1">
                           <span className="font-semibold">{language === 'nl' ? 'Product:' : 'Product:'}</span>
