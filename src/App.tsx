@@ -33,7 +33,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "./components/ui/alert-dialog";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Trash2 } from "lucide-react";
 import {
   useTranslation,
   translations,
@@ -2920,74 +2920,75 @@ export default function App() {
             <div className="px-6 py-4 space-y-4">
               <p className="text-sm text-gray-700">
                 {language === "nl"
-                  ? "De volgende artikelen worden aanbevolen en staan standaard aangevinkt. Vul een waarde in of verwijder het artikel als u het niet wenst."
-                  : "The following articles are recommended and checked by default. Enter a value or remove the article if you don't want it."}
+                  ? "De volgende artikelen worden aanbevolen. Vul een waarde in of verwijder het artikel met het prullenbak-icoon als u het niet wenst."
+                  : "The following articles are recommended. Enter a value or remove the article with the trash icon if you don't want it."}
               </p>
               <div className="space-y-3 max-h-[50vh] overflow-y-auto">
-                {aanbevolenItems.map((item, idx) => {
+                {aanbevolenItems.filter((item) => item.checked).map((item, idx) => {
+                  const realIdx = aanbevolenItems.indexOf(item);
                   const roomName =
                     rooms.find((r) => r.id === item.roomId)?.roomName ||
                     `${language === "nl" ? "Ruimte" : "Room"} ${item.roomId}`;
                   return (
                     <div
                       key={`${item.article.productCode}-${item.roomId}`}
-                      className={`p-3 rounded-lg border ${
-                        item.checked
-                          ? "border-green-300 bg-green-50"
-                          : "border-gray-200 bg-gray-50 opacity-60"
-                      }`}
+                      className="p-3 rounded-lg border border-green-300 bg-green-50"
                     >
-                      <div className="flex items-start gap-3">
-                        <input
-                          type="checkbox"
-                          checked={item.checked}
-                          onChange={(e) => {
+                      <div className="flex items-center gap-3">
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm font-medium text-[#2d4724]">
+                            {item.article.description}
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            {item.article.productCode} — {roomName}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <label className="text-xs text-gray-600">
+                            {item.article.eenheid || "M2"}:
+                          </label>
+                          <input
+                            type="number"
+                            value={item.area}
+                            min="0"
+                            onChange={(e) => {
+                              setAanbevolenItems((prev) =>
+                                prev.map((it, i) =>
+                                  i === realIdx
+                                    ? { ...it, area: e.target.value }
+                                    : it,
+                                ),
+                              );
+                            }}
+                            className="w-20 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#2d4724]"
+                          />
+                        </div>
+                        <button
+                          onClick={() => {
                             setAanbevolenItems((prev) =>
                               prev.map((it, i) =>
-                                i === idx
-                                  ? { ...it, checked: e.target.checked }
+                                i === realIdx
+                                  ? { ...it, checked: false }
                                   : it,
                               ),
                             );
                           }}
-                          className="mt-1 h-4 w-4 rounded border-gray-300 text-[#2d4724] focus:ring-[#2d4724]"
-                        />
-                        <div className="flex-1 space-y-2">
-                          <div>
-                            <div className="text-sm font-medium text-[#2d4724]">
-                              {item.article.description}
-                            </div>
-                            <div className="text-xs text-gray-500">
-                              {item.article.productCode} — {roomName}
-                            </div>
-                          </div>
-                          {item.checked && (
-                            <div className="flex items-center gap-2">
-                              <label className="text-xs text-gray-600">
-                                {item.article.eenheid || "M2"}:
-                              </label>
-                              <input
-                                type="number"
-                                value={item.area}
-                                min="0"
-                                onChange={(e) => {
-                                  setAanbevolenItems((prev) =>
-                                    prev.map((it, i) =>
-                                      i === idx
-                                        ? { ...it, area: e.target.value }
-                                        : it,
-                                    ),
-                                  );
-                                }}
-                                className="w-24 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#2d4724]"
-                              />
-                            </div>
-                          )}
-                        </div>
+                          className="p-1.5 rounded hover:bg-red-100 text-gray-400 hover:text-red-600 transition-colors shrink-0"
+                          title={language === "nl" ? "Verwijderen" : "Remove"}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
                       </div>
                     </div>
                   );
                 })}
+                {aanbevolenItems.every((item) => !item.checked) && (
+                  <p className="text-sm text-gray-500 text-center py-2">
+                    {language === "nl"
+                      ? "Alle aanbevolen artikelen zijn verwijderd."
+                      : "All recommended articles have been removed."}
+                  </p>
+                )}
               </div>
               <div className="flex justify-end gap-3 pt-2">
                 <Button
