@@ -1,0 +1,11 @@
+            // Add the service automatically
+            onUpdateService(roomId, singleArticle.serviceType, singleArticle.description, {
+              area: Math.ceil(quantity),
+              isActive: true,
+              isMandatory: false,
+              isExtraConfiguratorService: type === "Extra configurator",
+              productCode: singleArticle.productCode,
+              category: singleArticle.category || '',
+              eenheid: singleArticle.eenheid || 'M2',
+              berekening: singleArticle.berekening || 'Vaste prijs'
+            });

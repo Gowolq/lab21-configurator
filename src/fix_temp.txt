@@ -1,0 +1,12 @@
+Line 933-936:
+933:         alert(`❌ GEEN extra configuratoren gevonden!\\n\\nTotal services: ${services.length}\\nServices met area > 0: ${services.filter(s => s.area > 0).length}\\nServices met isExtraConfiguratorService: ${services.filter(s => s.isExtraConfiguratorService).length}`);
+934:       
+935:       // 3. Voor elke vereiste extra configurator: check of deze al in de lijst staat
+936:       const configuratorsToAdd: string[] = [];
+
+SHOULD BE:
+933:         alert(`❌ GEEN extra configuratoren gevonden!\\n\\nTotal services: ${services.length}\\nServices met area > 0: ${services.filter(s => s.area > 0).length}\\nServices met isExtraConfiguratorService: ${services.filter(s => s.isExtraConfiguratorService).length}`);
+934:       }
+935:       
+936:       // 3. Voor elke vereiste extra configurator: check of deze al in de lijst staat
+937:       const configuratorsToAdd: string[] = [];

@@ -1,0 +1,89 @@
+PATCH VOOR TRANSLATIONS.TS
+
+Nederlandse serviceSection (regel 574-591):
+Vervang:
+    serviceSection: {
+      quantity: "Aantal",
+      type: "Type",
+      mandatory: "Verplicht",
+      optional: "Optioneel",
+      selected: "Geselecteerd",
+      installationMethod: "Legmethode",
+      pattern: "Legpatroon",
+      heatingType: "Type vloerverwarming",
+      integratedUnderfloor: "Geïntegreerde ondervloer",
+      floor: "Verdieping",
+      subfloor: "Ondergrond",
+      meters: "Meters",
+      brand: "Merk",
+      vocht: "Vocht",
+      droogbouw: "Droogbouw",
+      vve: "VVE"
+    },
+
+Door:
+    serviceSection: {
+      quantity: "Aantal",
+      type: "Type",
+      mandatory: "Verplicht",
+      optional: "Optioneel",
+      selected: "Geselecteerd",
+      installationMethod: "Legmethode",
+      pattern: "Legpatroon",
+      heatingType: "Type vloerverwarming",
+      integratedUnderfloor: "Geïntegreerde ondervloer",
+      floor: "Verdieping",
+      subfloor: "Ondergrond",
+      meters: "Meters",
+      brand: "Merk",
+      vocht: "Vocht",
+      droogbouw: "Droogbouw",
+      vve: "VVE",
+      laminaat: "Laminaat",
+      klikPvc: "Klik PVC",
+      merk: "Merk"
+    },
+
+Engelse serviceSection (regel 925-942):
+Vervang:
+    serviceSection: {
+      quantity: "Quantity",
+      type: "Type",
+      mandatory: "Mandatory",
+      optional: "Optional",
+      selected: "Selected",
+      installationMethod: "Installation Method",
+      pattern: "Pattern",
+      heatingType: "Heating Type",
+      integratedUnderfloor: "Integrated Underfloor",
+      floor: "Floor",
+      subfloor: "Subfloor",
+      meters: "Meters",
+      brand: "Brand",
+      vocht: "Moisture",
+      droogbouw: "Drywall",
+      vve: "HOA"
+    },
+
+Door:
+    serviceSection: {
+      quantity: "Quantity",
+      type: "Type",
+      mandatory: "Mandatory",
+      optional: "Optional",
+      selected: "Selected",
+      installationMethod: "Installation Method",
+      pattern: "Pattern",
+      heatingType: "Heating Type",
+      integratedUnderfloor: "Integrated Underfloor",
+      floor: "Floor",
+      subfloor: "Subfloor",
+      meters: "Meters",
+      brand: "Brand",
+      vocht: "Moisture",
+      droogbouw: "Drywall",
+      vve: "HOA",
+      laminaat: "Laminate",
+      klikPvc: "Click PVC",
+      merk: "Brand"
+    },
