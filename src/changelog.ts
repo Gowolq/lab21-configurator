@@ -1,5 +1,5 @@
 // Changelog data - voeg nieuwe entries bovenaan toe
-export const APP_VERSION = "1.2.0";
+export const APP_VERSION = "1.3.0";
 
 export interface ChangelogEntry {
   version: string;
@@ -8,6 +8,15 @@ export interface ChangelogEntry {
 }
 
 export const changelog: ChangelogEntry[] = [
+  {
+    version: "1.3.0",
+    date: "2026-04-02",
+    changes: [
+      "Blokkerende popup bij niet-ingevulde aanbevolen artikelen",
+      "Gebruiker moet waarde invullen of artikel verwijderen bij doorgaan",
+      "Aanbevolen artikelen staan standaard aangevinkt in popup",
+    ],
+  },
   {
     version: "1.2.0",
     date: "2026-04-02",

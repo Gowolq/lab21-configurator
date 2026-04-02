@@ -245,6 +245,11 @@ export default function App() {
   const [showCompletionDialog, setShowCompletionDialog] =
     useState(false);
   const [services, setServices] = useState<ServiceState[]>([]);
+  // Aanbevolen artikelen popup state
+  const [showAanbevolenPopup, setShowAanbevolenPopup] = useState(false);
+  const [aanbevolenItems, setAanbevolenItems] = useState<
+    { article: typeof legserviceArticles[0]; roomId: number; checked: boolean; area: string }[]
+  >([]);
   // Service search state per room
   const [serviceSearchTerms, setServiceSearchTerms] = useState<{
     [roomId: number]: string;
@@ -1268,6 +1273,10 @@ export default function App() {
     }
   };
 
+  const proceedToOrderOverview = () => {
+    setCurrentScreen("order-overview");
+  };
+
   const handleSubmitOrder = () => {
     console.log("🔵 🔵 🔵 handleSubmitOrder CALLED 🔵 🔵 🔵");
     console.log("Services state:", services);
@@ -1308,8 +1317,96 @@ export default function App() {
     );
     console.log("Rooms:", rooms);
 
-    // Navigate to order overview
-    setCurrentScreen("order-overview");
+    // Check for unfilled recommended articles
+    const unfilledAanbevolen: typeof aanbevolenItems = [];
+    rooms.forEach((room) => {
+      legserviceArticles
+        .filter((art) => art.aanbevolen === true)
+        .forEach((art) => {
+          const serviceTitle = `${art.productCode} - ${art.description}`;
+          const existingService = services.find(
+            (s) =>
+              s.roomId === room.id &&
+              s.serviceTitle === serviceTitle &&
+              s.area > 0,
+          );
+          if (!existingService) {
+            // Check if not already in the list (avoid duplicates for shared articles)
+            const alreadyAdded = unfilledAanbevolen.some(
+              (item) =>
+                item.article.productCode === art.productCode &&
+                item.roomId === room.id,
+            );
+            if (!alreadyAdded) {
+              unfilledAanbevolen.push({
+                article: art,
+                roomId: room.id,
+                checked: true,
+                area: room.area > 0 ? room.area.toString() : "1",
+              });
+            }
+          }
+        });
+    });
+
+    if (unfilledAanbevolen.length > 0) {
+      setAanbevolenItems(unfilledAanbevolen);
+      setShowAanbevolenPopup(true);
+      return; // Block navigation
+    }
+
+    // No unfilled recommended articles, proceed
+    proceedToOrderOverview();
+  };
+
+  const handleAanbevolenConfirm = () => {
+    // Add checked items as services
+    const checkedItems = aanbevolenItems.filter((item) => item.checked);
+    checkedItems.forEach((item) => {
+      const serviceTitle = `${item.article.productCode} - ${item.article.description}`;
+      const areaValue = parseFloat(item.area) || 0;
+      if (areaValue > 0) {
+        setServices((prev) => {
+          // Check if already exists
+          const exists = prev.find(
+            (s) =>
+              s.roomId === item.roomId &&
+              s.serviceTitle === serviceTitle,
+          );
+          if (exists) {
+            return prev.map((s) =>
+              s.roomId === item.roomId &&
+              s.serviceTitle === serviceTitle
+                ? { ...s, area: areaValue, isSelected: true }
+                : s,
+            );
+          }
+          return [
+            ...prev,
+            {
+              roomId: item.roomId,
+              serviceType: item.article.serviceType,
+              serviceTitle,
+              area: areaValue,
+              isActive: true,
+              isMandatory: false,
+              isSelected: true,
+            },
+          ];
+        });
+      }
+    });
+    setShowAanbevolenPopup(false);
+    setAanbevolenItems([]);
+    // Use setTimeout to allow state to settle before navigating
+    setTimeout(() => proceedToOrderOverview(), 100);
+  };
+
+  const handleAanbevolenCanValidate = (): boolean => {
+    // Every item must either be unchecked OR have area > 0
+    return aanbevolenItems.every(
+      (item) => !item.checked || (parseFloat(item.area) || 0) > 0,
+    );
   };
 
   // Helper function to check if there are extra configurators needed
@@ -2793,6 +2890,112 @@ export default function App() {
                   {language === "nl"
                     ? "Nieuwe configurator opstarten"
                     : "Start new configurator"}
+                </Button>
+              </div>
+            </div>
+          </DialogDescription>
+        </DialogContent>
+      </Dialog>
+
+      {/* Aanbevolen Artikelen Popup */}
+      <Dialog
+        open={showAanbevolenPopup}
+        onOpenChange={(open) => {
+          if (!open) return; // Prevent closing by clicking outside
+        }}
+      >
+        <DialogContent
+          className="max-w-lg p-0 gap-0 overflow-hidden"
+          onPointerDownOutside={(e) => e.preventDefault()}
+          onEscapeKeyDown={(e) => e.preventDefault()}
+        >
+          <div className="bg-[#2d4724] text-white px-6 py-4 text-center">
+            <DialogTitle className="text-white m-0">
+              {language === "nl"
+                ? "Aanbevolen artikelen"
+                : "Recommended articles"}
+            </DialogTitle>
+          </div>
+          <DialogDescription asChild>
+            <div className="px-6 py-4 space-y-4">
+              <p className="text-sm text-gray-700">
+                {language === "nl"
+                  ? "De volgende artikelen worden aanbevolen en staan standaard aangevinkt. Vul een waarde in of verwijder het artikel als u het niet wenst."
+                  : "The following articles are recommended and checked by default. Enter a value or remove the article if you don't want it."}
+              </p>
+              <div className="space-y-3 max-h-[50vh] overflow-y-auto">
+                {aanbevolenItems.map((item, idx) => {
+                  const roomName =
+                    rooms.find((r) => r.id === item.roomId)?.roomName ||
+                    `${language === "nl" ? "Ruimte" : "Room"} ${item.roomId}`;
+                  return (
+                    <div
+                      key={`${item.article.productCode}-${item.roomId}`}
+                      className={`p-3 rounded-lg border ${
+                        item.checked
+                          ? "border-green-300 bg-green-50"
+                          : "border-gray-200 bg-gray-50 opacity-60"
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <input
+                          type="checkbox"
+                          checked={item.checked}
+                          onChange={(e) => {
+                            setAanbevolenItems((prev) =>
+                              prev.map((it, i) =>
+                                i === idx
+                                  ? { ...it, checked: e.target.checked }
+                                  : it,
+                              ),
+                            );
+                          }}
+                          className="mt-1 h-4 w-4 rounded border-gray-300 text-[#2d4724] focus:ring-[#2d4724]"
+                        />
+                        <div className="flex-1 space-y-2">
+                          <div>
+                            <div className="text-sm font-medium text-[#2d4724]">
+                              {item.article.description}
+                            </div>
+                            <div className="text-xs text-gray-500">
+                              {item.article.productCode} — {roomName}
+                            </div>
+                          </div>
+                          {item.checked && (
+                            <div className="flex items-center gap-2">
+                              <label className="text-xs text-gray-600">
+                                {item.article.eenheid || "M2"}:
+                              </label>
+                              <input
+                                type="number"
+                                value={item.area}
+                                min="0"
+                                onChange={(e) => {
+                                  setAanbevolenItems((prev) =>
+                                    prev.map((it, i) =>
+                                      i === idx
+                                        ? { ...it, area: e.target.value }
+                                        : it,
+                                    ),
+                                  );
+                                }}
+                                className="w-24 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#2d4724]"
+                              />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="flex justify-end gap-3 pt-2">
+                <Button
+                  onClick={handleAanbevolenConfirm}
+                  disabled={!handleAanbevolenCanValidate()}
+                  className="bg-[#2d4724] hover:bg-[#1f3319] text-white px-6"
+                >
+                  {language === "nl" ? "Bevestigen" : "Confirm"}
                 </Button>
               </div>
             </div>
