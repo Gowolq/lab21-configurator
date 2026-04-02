@@ -34,7 +34,6 @@ import {
   AlertDialogTitle,
 } from "./components/ui/alert-dialog";
 import { ChevronDown } from "lucide-react";
-import { VersionBadge } from "./components/VersionBadge";
 import {
   useTranslation,
   translations,
@@ -2800,7 +2799,6 @@ export default function App() {
           </DialogDescription>
         </DialogContent>
       </Dialog>
-      <VersionBadge />
     </div>
   );
 }
