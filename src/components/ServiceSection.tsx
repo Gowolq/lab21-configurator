@@ -1352,6 +1352,10 @@ export function ServiceSection({
                           {article.aantalMinimum !== undefined && (
                             <> / {language === 'nl' ? 'Aantal (minimum):' : 'Quantity (minimum):'} {article.aantalMinimum}</>
                           )}
+                          {' / '}
+                          <span className={article.aanbevolen ? 'text-green-700 font-semibold' : ''}>
+                            {language === 'nl' ? 'Aanbevolen:' : 'Recommended:'} {article.aanbevolen ? (language === 'nl' ? 'Ja' : 'Yes') : (language === 'nl' ? 'Nee' : 'No')}
+                          </span>
                         </span>
                       </div>
                     )}
@@ -1800,6 +1804,10 @@ export function ServiceSection({
                     <span>{language === 'nl' ? 'Berekening:' : 'Calculation:'} {article?.berekening || ''}</span>
                     {' / '}
                     <span>{language === 'nl' ? 'Aantal (minimum):' : 'Quantity (minimum):'} {article?.aantalMinimum ?? article?.van ?? ''}</span>
+                    {' / '}
+                    <span className={article?.aanbevolen ? 'text-green-700 font-semibold' : ''}>
+                      {language === 'nl' ? 'Aanbevolen:' : 'Recommended:'} {article?.aanbevolen ? (language === 'nl' ? 'Ja' : 'Yes') : (language === 'nl' ? 'Nee' : 'No')}
+                    </span>
                   </div>
                 </div>
               )}
@@ -2458,6 +2466,10 @@ export function ServiceSection({
                         {article.aantalMinimum !== undefined && (
                           <> / {language === 'nl' ? 'Aantal (minimum):' : 'Quantity (minimum):'} {article.aantalMinimum}</>
                         )}
+                        {' / '}
+                        <span className={article.aanbevolen ? 'text-green-700 font-semibold' : ''}>
+                          {language === 'nl' ? 'Aanbevolen:' : 'Recommended:'} {article.aanbevolen ? (language === 'nl' ? 'Ja' : 'Yes') : (language === 'nl' ? 'Nee' : 'No')}
+                        </span>
                       </span>
                     </div>
                   )}
