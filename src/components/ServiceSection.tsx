@@ -1353,7 +1353,7 @@ export function ServiceSection({
                             <> / {language === 'nl' ? 'Aantal (minimum):' : 'Quantity (minimum):'} {article.aantalMinimum}</>
                           )}
                           {' / '}
-                          <span className={article.aanbevolen ? 'text-green-700 font-semibold' : ''}>
+                          <span>
                             {language === 'nl' ? 'Aanbevolen:' : 'Recommended:'} {article.aanbevolen ? (language === 'nl' ? 'Ja' : 'Yes') : (language === 'nl' ? 'Nee' : 'No')}
                           </span>
                         </span>
@@ -1805,7 +1805,7 @@ export function ServiceSection({
                     {' / '}
                     <span>{language === 'nl' ? 'Aantal (minimum):' : 'Quantity (minimum):'} {article?.aantalMinimum ?? article?.van ?? ''}</span>
                     {' / '}
-                    <span className={article?.aanbevolen ? 'text-green-700 font-semibold' : ''}>
+                    <span>
                       {language === 'nl' ? 'Aanbevolen:' : 'Recommended:'} {article?.aanbevolen ? (language === 'nl' ? 'Ja' : 'Yes') : (language === 'nl' ? 'Nee' : 'No')}
                     </span>
                   </div>
