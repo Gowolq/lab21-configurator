@@ -310,7 +310,7 @@ export default function App() {
       id: 1,
       level: "",
       roomName: "",
-      surface: "",
+      surface: "Zandcement",
       oldSurface: "",
       newSurface: "",
       area: 0,
