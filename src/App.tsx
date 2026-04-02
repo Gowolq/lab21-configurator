@@ -310,9 +310,9 @@ export default function App() {
       id: 1,
       level: "",
       roomName: "",
-      surface: "Zandcement",
+      surface: "zandcement",
       oldSurface: "",
-      newSurface: "",
+      newSurface: "zandcement",
       area: 0,
       product: undefined, // Geen product geselecteerd bij start
       collapsed: false,
