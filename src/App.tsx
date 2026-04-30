@@ -16,6 +16,7 @@ import { RoomConfigurator } from "./components/RoomConfigurator";
 import { ServiceTabs } from "./components/ServiceTabs";
 import { TotalsSummary } from "./components/TotalsSummary";
 import { OrderOverview } from "./components/OrderOverview";
+import { CustomerArticleList } from "./components/CustomerArticleList";
 import { Button } from "./components/ui/button";
 import {
   Select,
@@ -1071,6 +1072,55 @@ export default function App() {
     setShowProductModal(true);
   };
 
+  // Klant-modus: voeg een nieuw artikel toe en open direct het product-modal
+  const addArticleAndOpenModal = () => {
+    let newRoomId: number = 1;
+    setRooms((prev) => {
+      newRoomId =
+        prev.length > 0
+          ? Math.max(...prev.map((r) => r.id)) + 1
+          : 1;
+      const newRoom: Room = {
+        id: newRoomId,
+        level: "",
+        roomName: "",
+        surface: "klant-artikel",
+        area: 0,
+        product: undefined,
+        collapsed: false,
+      };
+      return [...prev, newRoom];
+    });
+    setTimeout(() => {
+      setCurrentRoomForProduct(newRoomId);
+      setShowProductModal(true);
+    }, 50);
+  };
+
+  const updateArticleArea = (roomId: number, area: number) => {
+    updateRoom(roomId, { area });
+  };
+
+  const deleteArticle = (roomId: number) => {
+    if (rooms.length > 1) {
+      setRooms((prev) => prev.filter((r) => r.id !== roomId));
+    } else {
+      // Behoud minstens 1 lege regel
+      setRooms((prev) =>
+        prev.map((r) =>
+          r.id === roomId
+            ? {
+                ...r,
+                product: undefined,
+                selectedProduct: undefined,
+                area: 0,
+              }
+            : r,
+        ),
+      );
+    }
+  };
+
   const handleArticleSelection = (product: Product) => {
     if (currentRoomForProduct) {
       // Translate legmethode to current language
@@ -1126,26 +1176,31 @@ export default function App() {
         selectedProduct: translatedProduct,
       };
 
-      // Set default values only if not already filled
-      if (!currentRoom?.level || currentRoom.level === "") {
-        console.log("Setting default level");
-        updates.level = "ground-floor"; // Use the value from SelectItem, not the display text
-      }
-      if (
-        !currentRoom?.roomName ||
-        currentRoom.roomName === ""
-      ) {
-        console.log("Setting default roomName");
-        updates.roomName = "woonkamer"; // Use the value from SelectItem, not the display text
-      }
-      if (!currentRoom?.surface || currentRoom.surface === "") {
-        console.log("Setting default surface");
-        updates.surface =
-          language === "en" ? "Sand Cement" : "Zandcement";
-      }
-      if (!currentRoom?.area || currentRoom.area === 0) {
-        console.log("Setting default area");
-        updates.area = 40;
+      // In Klant-modus: GEEN auto-fill voor ruimte-velden, gebruiker voert zelf aantal in
+      const isKlantModus = relationData.execution === "Klant";
+
+      if (!isKlantModus) {
+        // Set default values only if not already filled
+        if (!currentRoom?.level || currentRoom.level === "") {
+          console.log("Setting default level");
+          updates.level = "ground-floor"; // Use the value from SelectItem, not the display text
+        }
+        if (
+          !currentRoom?.roomName ||
+          currentRoom.roomName === ""
+        ) {
+          console.log("Setting default roomName");
+          updates.roomName = "woonkamer"; // Use the value from SelectItem, not the display text
+        }
+        if (!currentRoom?.surface || currentRoom.surface === "") {
+          console.log("Setting default surface");
+          updates.surface =
+            language === "en" ? "Sand Cement" : "Zandcement";
+        }
+        if (!currentRoom?.area || currentRoom.area === 0) {
+          console.log("Setting default area");
+          updates.area = 40;
+        }
       }
 
       console.log(
@@ -1316,6 +1371,12 @@ export default function App() {
       allSelectedServices,
     );
     console.log("Rooms:", rooms);
+
+    // In Klant-modus: sla aanbevolen-check over (geen legservices nodig)
+    if (relationData.execution === "Klant") {
+      proceedToOrderOverview();
+      return;
+    }
 
     // Check for unfilled recommended articles
     const unfilledAanbevolen: typeof aanbevolenItems = [];
@@ -2248,6 +2309,23 @@ export default function App() {
             </div>
           </div>
 
+          {/* === KLANT-MODUS: artikellijst zonder ruimtes/diensten === */}
+          {relationData.execution === "Klant" && (
+            <CustomerArticleList
+              rooms={rooms}
+              language={language}
+              onUpdateArea={updateArticleArea}
+              onDeleteArticle={deleteArticle}
+              onSelectProduct={(roomId) =>
+                handleOpenProductModal(roomId)
+              }
+              onAddArticle={addArticleAndOpenModal}
+            />
+          )}
+
+          {/* === LAB21/COMBI-MODUS: bestaande ruimte-/dienstenflow === */}
+          {relationData.execution !== "Klant" && (
+            <>
           {/* Room Sections */}
           {rooms.map((room) => (
             <div key={room.id} id={`room-${room.id}`}>
@@ -2440,6 +2518,9 @@ export default function App() {
               </div>
             </div>
           )}
+            </>
+          )}
+          {/* === EINDE LAB21/COMBI-MODUS === */}
 
           {/* Submit Button - Bottom Right - Always show for all configurators */}
           <div className="flex justify-end">
