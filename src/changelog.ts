@@ -1,5 +1,5 @@
 // Changelog data - voeg nieuwe entries bovenaan toe
-export const APP_VERSION = "1.4.0";
+export const APP_VERSION = "1.4.2";
 
 export interface ChangelogEntry {
     version: string;
@@ -8,6 +8,15 @@ export interface ChangelogEntry {
 }
 
 export const changelog: ChangelogEntry[] = [
+  {
+        version: "1.4.2",
+        date: "2026-04-30",
+        changes: [
+            "Klant-modus: aantal-invoerveld duidelijker zichtbaar (groene rand)",
+            "Klant-modus: lege Selecteer product-rij verwijderd, alleen gekozen artikelen tonen",
+            "Klant-modus: Producten en Services sectie weggehaald uit overzichtspagina",
+        ],
+    },
   {
         version: "1.4.0",
         date: "2026-04-30",
