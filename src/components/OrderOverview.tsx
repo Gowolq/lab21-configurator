@@ -544,7 +544,8 @@ export function OrderOverview({ rooms, services, relationData, onBack, onClose, 
             </div>
           )}
 
-          {/* Products and Services Section */}
+          {/* Products and Services Section - in Klant-modus weggehaald */}
+          {relationData.execution !== "Klant" && (
           <div className="border rounded-lg overflow-hidden bg-white shadow-sm">
             {/* Header - Dark green background */}
             <div className="bg-[#2d4724] text-white px-4 py-3">
@@ -631,6 +632,7 @@ export function OrderOverview({ rooms, services, relationData, onBack, onClose, 
               )}
             </div>
           </div>
+          )}
 
           {/* Totals Section */}
           <div className="border rounded-lg overflow-hidden bg-white shadow-sm">
