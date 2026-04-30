@@ -104,6 +104,7 @@ export function CustomerArticleList({
       noArticles: "Nog geen artikelen toegevoegd. Klik op 'Voeg artikel toe' om te beginnen.",
       delete: "Verwijderen",
       amount: "Aantal",
+      enterAmount: "Vul aantal in",
     },
     en: {
       sectionTitle: "Articles",
@@ -121,12 +122,14 @@ export function CustomerArticleList({
       noArticles: "No articles added yet. Click 'Add article' to start.",
       delete: "Delete",
       amount: "Amount",
+      enterAmount: "Enter amount",
     },
   };
 
   const l = labels[language === "en" ? "en" : "nl"];
 
-  const articleRooms = rooms;
+  // Toon alleen rooms met een gekozen product — lege/initiele rooms verbergen we
+  const articleRooms = rooms.filter((r) => r.selectedProduct);
 
   return (
     <div className="border rounded-lg bg-white">
@@ -172,35 +175,7 @@ export function CustomerArticleList({
                 const teLeveren = pakken * pakgrootte;
 
                 if (!product) {
-                  // Lege regel - laat product selecteren
-                  return (
-                    <div
-                      key={room.id}
-                      className="grid grid-cols-1 md:grid-cols-[2fr_110px_70px_90px_110px_110px_70px_90px_40px] gap-3 items-center text-xs py-2 border-b border-gray-200 last:border-0"
-                    >
-                      <div className="md:col-span-8">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="w-full md:w-auto border-[#2d4724] text-[#2d4724] hover:bg-[#2d4724] hover:text-white"
-                          onClick={() => onSelectProduct(room.id)}
-                        >
-                          {l.selectProduct}
-                        </Button>
-                      </div>
-                      <div className="flex justify-end">
-                        <button
-                          type="button"
-                          onClick={() => onDeleteArticle(room.id)}
-                          className="text-gray-400 hover:text-red-600 p-1"
-                          title={l.delete}
-                          disabled={rooms.length <= 1}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </div>
-                  );
+                  return null; // wordt al gefilterd in articleRooms, voor de zekerheid
                 }
 
                 return (
@@ -233,6 +208,9 @@ export function CustomerArticleList({
 
                     {/* Ingevoerd (input) */}
                     <div className="md:text-right">
+                      <span className="md:hidden text-gray-500 mr-1 block mb-1 font-medium">
+                        {l.amount} ({eenheid}):
+                      </span>
                       <Input
                         type="number"
                         min="0"
@@ -242,8 +220,8 @@ export function CustomerArticleList({
                           const val = parseFloat(e.target.value);
                           onUpdateArea(room.id, isNaN(val) ? 0 : val);
                         }}
-                        placeholder="0"
-                        className="h-8 text-right md:ml-auto md:w-[100px]"
+                        placeholder={l.enterAmount}
+                        className="h-9 text-right md:ml-auto md:w-[120px] bg-white border-2 border-[#2d4724]/40 focus:border-[#2d4724]"
                       />
                     </div>
 
