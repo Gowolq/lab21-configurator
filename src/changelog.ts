@@ -1,5 +1,5 @@
 // Changelog data - voeg nieuwe entries bovenaan toe
-export const APP_VERSION = "1.4.2";
+export const APP_VERSION = "1.4.4";
 
 export interface ChangelogEntry {
     version: string;
@@ -9,6 +9,14 @@ export interface ChangelogEntry {
 
 export const changelog: ChangelogEntry[] = [
   {
+        version: "1.4.4",
+        date: "2026-04-30",
+        changes: [
+            "Afwerken: nieuwe service 'LEG PROFIEL' (basis kosten pas maken + plaatsen profiel)",
+            "LEG PROFIEL: 6 keuze-producten in popup (Trapuitloop RVS/zilver/zwart, Trapneus PVC RVS/zwart, Duo-hoeklijn 24,5x30mm zilver 3m)",
+        ],
+    },
+    {
         version: "1.4.2",
         date: "2026-04-30",
         changes: [
