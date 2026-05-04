@@ -854,7 +854,7 @@ export function ServiceTabs({ rooms, currentRoomId, language, services = [], onU
                         className="inline-flex items-center justify-center min-w-[1.5rem] h-[1.5rem] px-1.5 rounded-full text-xs font-semibold"
                         style={{ backgroundColor: tab.color, color: 'white' }}
                       >
-                        5
+                        7
                       </span>
                       {collapsedOptionalSections.has("container") ? (
                         <ChevronDown className="h-5 w-5" />
@@ -972,6 +972,25 @@ export function ServiceTabs({ rooms, currentRoomId, language, services = [], onU
                           onUpdateService={onUpdateService}
                           isContainerService={false}
                           article={legserviceArticles.find(a => a.productCode === "Leg-afkitvloer")}
+                          onOpenServiceArticleDetail={onOpenServiceArticleDetail}
+                          currentRoom={currentRoom}
+                        />
+
+                        {/* LEG PROFIEL */}
+                        <ServiceSection
+                          title={language === 'nl' ? 'Leg-profiel - LEG PROFIEL Basis kosten voor het pas maken en plaatsen van 1 stuk profiel. (niet voor traptreden)' : 'Leg-profiel - INSTALL PROFILE Basic costs for cutting and installing 1 piece of profile. (not for stair treads)'}
+                          surface={currentRoom?.surface || "Zandcement"}
+                          area={currentRoom?.area.toString() || "0"}
+                          type={TYPE_OPTIONAL}
+                          roomId={currentRoom?.id || 0}
+                          language={language}
+                          serviceType="afwerken"
+                          isMandatory={false}
+                          rooms={rooms}
+                          services={services}
+                          onUpdateService={onUpdateService}
+                          isContainerService={false}
+                          article={legserviceArticles.find(a => a.productCode === "Leg-profiel")}
                           onOpenServiceArticleDetail={onOpenServiceArticleDetail}
                           currentRoom={currentRoom}
                         />
