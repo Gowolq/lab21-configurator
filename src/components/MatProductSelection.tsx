@@ -9,6 +9,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
@@ -22,9 +23,13 @@ interface MatProductSelectionProps {
   language: string;
   currentlySelected?: LegserviceArticle;
   selectionMode?: 'choice' | 'optional' | 'followup';
+  // Parent service info (voor LEG PROFIEL discrepantie-check)
+  parentArticleCode?: string;
+  parentArea?: number;
+  onUpdateParentArea?: (newArea: number) => void;
 }
 
-export function MatProductSelection({ matArticles, onClose, onSelect, onSelectMultiple, language, currentlySelected, selectionMode }: MatProductSelectionProps) {
+export function MatProductSelection({ matArticles, onClose, onSelect, onSelectMultiple, language, currentlySelected, selectionMode, parentArticleCode, parentArea, onUpdateParentArea }: MatProductSelectionProps) {
   const t = useTranslation(language);
   const [searchInput, setSearchInput] = useState("");
   const [quantities, setQuantities] = useState<Record<string, string>>({});
@@ -44,6 +49,10 @@ export function MatProductSelection({ matArticles, onClose, onSelect, onSelectMu
   const [showFollowUpPopup, setShowFollowUpPopup] = useState(false);
   const [followUpParentProduct, setFollowUpParentProduct] = useState<LegserviceArticle | null>(null);
   const [followUpQuantities, setFollowUpQuantities] = useState<Record<string, string>>({});
+
+  // Discrepantie-popup voor LEG PROFIEL: aantal stuks profielen vs aantal service-stuks
+  const [showDiscrepancyDialog, setShowDiscrepancyDialog] = useState(false);
+  const [discrepancyTotal, setDiscrepancyTotal] = useState<number>(0);
 
   // Filter products based on search
   const filteredProducts = matArticles.filter(article => {
@@ -81,51 +90,52 @@ export function MatProductSelection({ matArticles, onClose, onSelect, onSelectMu
     }
   };
 
-  const handleSubmitAll = () => {
-    console.log('🚀 handleSubmitAll called, current quantities:', quantities);
+  // Bereken totaal van alle ingevulde quantities (alleen niet-Maat artikelen — die zijn relevant voor profielen)
+  const calculateSelectionTotal = (): number => {
+    return matArticles.reduce((sum, article) => {
+      const qty = parseFloat(quantities[article.productCode] || "0");
+      return sum + (isNaN(qty) ? 0 : qty);
+    }, 0);
+  };
+
+  // De daadwerkelijke submit-actie (zonder discrepantie-check)
+  const performSubmit = () => {
+    console.log('🚀 performSubmit called, current quantities:', quantities);
     console.log('📏 Current L/B data:', lbData);
-    
-    // Get all products with quantity > 0 OR with L/B data
+
     const productsToAdd = matArticles.filter(article => {
       const quantity = parseFloat(quantities[article.productCode] || "0");
       const hasLB = lbData[article.productCode]?.length && lbData[article.productCode]?.width;
       return quantity > 0 || hasLB;
     });
 
-    console.log('📦 Products to add:', productsToAdd);
-    
-    // Submit all products
     productsToAdd.forEach(article => {
       const isMaatArticle = article.berekening === "Maat";
       const lbInfo = lbData[article.productCode];
-      
+
       if (isMaatArticle && lbInfo && lbInfo.length && lbInfo.width) {
-        // For Maat articles, use 1 as quantity and pass L/B data
         const length = parseFloat(lbInfo.length);
         const width = parseFloat(lbInfo.width);
-        console.log('➕ Adding Maat product:', article.productCode, 'L:', length, 'W:', width);
-        try {
-          onSelect(article, 1, length, width);
-          console.log('✅ Successfully added Maat product:', article.productCode);
-        } catch (error) {
-          console.error('❌ Error adding Maat product:', article.productCode, error);
-        }
+        try { onSelect(article, 1, length, width); } catch (e) { console.error(e); }
       } else {
-        // For regular articles, use the quantity
         const quantity = parseFloat(quantities[article.productCode]);
-        console.log('➕ Adding regular product:', article.productCode, 'quantity:', quantity);
-        try {
-          onSelect(article, quantity);
-          console.log('✅ Successfully added regular product:', article.productCode);
-        } catch (error) {
-          console.error('❌ Error adding regular product:', article.productCode, error);
-        }
+        try { onSelect(article, quantity); } catch (e) { console.error(e); }
       }
     });
 
-    // Close after all are added
-    console.log('✅ Closing popup');
     onClose();
+  };
+
+  const handleSubmitAll = () => {
+    if (parentArticleCode === 'Leg-profiel' && parentArea !== undefined && parentArea > 0) {
+      const total = calculateSelectionTotal();
+      if (total > 0 && total !== parentArea) {
+        setDiscrepancyTotal(total);
+        setShowDiscrepancyDialog(true);
+        return;
+      }
+    }
+    performSubmit();
   };
   
   // Handle L/B popup confirmation for current product
@@ -516,6 +526,63 @@ export function MatProductSelection({ matArticles, onClose, onSelect, onSelectMu
               {language === 'nl' ? 'Sluiten' : 'Close'}
             </Button>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Discrepantie-popup voor LEG PROFIEL */}
+      <Dialog open={showDiscrepancyDialog} onOpenChange={setShowDiscrepancyDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-lg font-semibold text-[#2d4724]">
+              {language === 'nl' ? 'Aantal komt niet overeen' : 'Quantity mismatch'}
+            </DialogTitle>
+            <DialogDescription>
+              {language === 'nl'
+                ? 'Het totaal aantal geselecteerde profielen wijkt af van het ingevulde aantal voor de LEG PROFIEL service.'
+                : 'The total number of selected profiles differs from the quantity entered for the LEG PROFIEL service.'}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-3 py-4 text-sm text-gray-700">
+            <div className="flex justify-between border-b border-gray-200 pb-2">
+              <span>{language === 'nl' ? 'LEG PROFIEL service:' : 'LEG PROFIEL service:'}</span>
+              <span className="font-medium">{parentArea ?? 0} {language === 'nl' ? 'stuks' : 'pcs'}</span>
+            </div>
+            <div className="flex justify-between border-b border-gray-200 pb-2">
+              <span>{language === 'nl' ? 'Geselecteerde profielen totaal:' : 'Selected profiles total:'}</span>
+              <span className="font-medium">{discrepancyTotal} {language === 'nl' ? 'stuks' : 'pcs'}</span>
+            </div>
+            <div className="pt-2">
+              {language === 'nl'
+                ? `Wil je de LEG PROFIEL service automatisch aanpassen naar ${discrepancyTotal} stuks?`
+                : `Do you want to automatically adjust the LEG PROFIEL service to ${discrepancyTotal} pieces?`}
+            </div>
+          </div>
+
+          <DialogFooter className="gap-2">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setShowDiscrepancyDialog(false);
+              }}
+            >
+              {language === 'nl' ? 'Annuleren' : 'Cancel'}
+            </Button>
+            <Button
+              className="bg-[#2d4724] hover:bg-[#1f3319] text-white"
+              onClick={() => {
+                if (onUpdateParentArea) {
+                  onUpdateParentArea(discrepancyTotal);
+                }
+                setShowDiscrepancyDialog(false);
+                performSubmit();
+              }}
+            >
+              {language === 'nl'
+                ? `Aanpassen naar ${discrepancyTotal}`
+                : `Adjust to ${discrepancyTotal}`}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
 
