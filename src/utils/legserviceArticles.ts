@@ -1035,6 +1035,35 @@ export const legserviceArticles: LegserviceArticle[] = [
     tot: 9999
   },
   {
+    productCode: "Leg-profiel",
+    description: "LEG PROFIEL Basis kosten voor het pas maken en plaatsen van 1 stuk profiel. (niet voor traptreden)",
+    serviceType: "afwerken",
+    isMandatory: false,
+    category: "Afwerking",
+    eenheid: "Stuk",
+    configuratorName: "Leg-profiel",
+    subcategorie: "Montage",
+    aantalMinimum: 1,
+    berekening: "Stuk",
+    keuzeServicesOptional: ["DUO-HK-2430-ZIL-3M"], // Optionele profiel keuze
+    van: 0,
+    tot: 9999
+  },
+  {
+    productCode: "DUO-HK-2430-ZIL-3M",
+    description: "Duo-hoeklijn 24,5 x 30mm zilver 3m",
+    serviceType: "afwerken",
+    isMandatory: false,
+    category: "Accessoires",
+    eenheid: "Stuk",
+    configuratorName: "DUO-HK-2430-ZIL-3M",
+    subcategorie: "Profielen",
+    aantalMinimum: 1,
+    berekening: "Stuk",
+    van: 0,
+    tot: 9999
+  },
+  {
     productCode: "AFWERKEN-10584",
     description: "LEG DEURMAT Aanvullende kosten voor het pasmaken en snijden van de te plaatsen mat",
     serviceType: "afwerken",
