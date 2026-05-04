@@ -534,40 +534,31 @@ export function MatProductSelection({ matArticles, onClose, onSelect, onSelectMu
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="text-lg font-semibold text-[#2d4724]">
-              {language === 'nl' ? 'Aantal komt niet overeen' : 'Quantity mismatch'}
+              {language === 'nl' ? 'Aantal aangepast' : 'Quantity adjusted'}
             </DialogTitle>
             <DialogDescription>
               {language === 'nl'
-                ? 'Het totaal aantal geselecteerde profielen wijkt af van het ingevulde aantal voor de LEG PROFIEL service.'
-                : 'The total number of selected profiles differs from the quantity entered for the LEG PROFIEL service.'}
+                ? `Het totaal aantal geselecteerde profielen (${discrepancyTotal} stuks) wijkt af van het ingevulde aantal voor de LEG PROFIEL service (${parentArea ?? 0} stuks). De LEG PROFIEL service is automatisch aangepast naar ${discrepancyTotal} stuks.`
+                : `The total number of selected profiles (${discrepancyTotal} pcs) differs from the quantity entered for the LEG PROFIEL service (${parentArea ?? 0} pcs). The LEG PROFIEL service has been automatically adjusted to ${discrepancyTotal} pcs.`}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-3 py-4 text-sm text-gray-700">
             <div className="flex justify-between border-b border-gray-200 pb-2">
-              <span>{language === 'nl' ? 'LEG PROFIEL service:' : 'LEG PROFIEL service:'}</span>
+              <span>{language === 'nl' ? 'LEG PROFIEL service (oud):' : 'LEG PROFIEL service (old):'}</span>
               <span className="font-medium">{parentArea ?? 0} {language === 'nl' ? 'stuks' : 'pcs'}</span>
             </div>
             <div className="flex justify-between border-b border-gray-200 pb-2">
               <span>{language === 'nl' ? 'Geselecteerde profielen totaal:' : 'Selected profiles total:'}</span>
               <span className="font-medium">{discrepancyTotal} {language === 'nl' ? 'stuks' : 'pcs'}</span>
             </div>
-            <div className="pt-2">
-              {language === 'nl'
-                ? `Wil je de LEG PROFIEL service automatisch aanpassen naar ${discrepancyTotal} stuks?`
-                : `Do you want to automatically adjust the LEG PROFIEL service to ${discrepancyTotal} pieces?`}
+            <div className="flex justify-between pt-1">
+              <span className="font-semibold text-[#2d4724]">{language === 'nl' ? 'LEG PROFIEL service (nieuw):' : 'LEG PROFIEL service (new):'}</span>
+              <span className="font-semibold text-[#2d4724]">{discrepancyTotal} {language === 'nl' ? 'stuks' : 'pcs'}</span>
             </div>
           </div>
 
-          <DialogFooter className="gap-2">
-            <Button
-              variant="outline"
-              onClick={() => {
-                setShowDiscrepancyDialog(false);
-              }}
-            >
-              {language === 'nl' ? 'Annuleren' : 'Cancel'}
-            </Button>
+          <DialogFooter>
             <Button
               className="bg-[#2d4724] hover:bg-[#1f3319] text-white"
               onClick={() => {
@@ -578,9 +569,7 @@ export function MatProductSelection({ matArticles, onClose, onSelect, onSelectMu
                 performSubmit();
               }}
             >
-              {language === 'nl'
-                ? `Aanpassen naar ${discrepancyTotal}`
-                : `Adjust to ${discrepancyTotal}`}
+              {language === 'nl' ? 'OK' : 'OK'}
             </Button>
           </DialogFooter>
         </DialogContent>
