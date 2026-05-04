@@ -2713,6 +2713,9 @@ export function ServiceSection({
               parentArticleCode={article?.productCode}
               parentArea={parseFloat(currentArea) || parseFloat(containerQuantity) || 0}
               onUpdateParentArea={(newArea) => {
+                // Update lokale state zodat UI direct meebeweegt
+                setContainerQuantity(newArea.toString());
+                // Update de service in App.tsx
                 if (onUpdateService && roomId !== undefined && article) {
                   onUpdateService(roomId, serviceType, title, {
                     area: newArea,
