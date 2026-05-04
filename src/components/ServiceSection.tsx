@@ -2710,6 +2710,17 @@ export function ServiceSection({
               language={language}
               currentlySelected={undefined}
               selectionMode={isFollowupService ? 'followup' : 'optional'}
+              parentArticleCode={article?.productCode}
+              parentArea={parseFloat(currentArea) || parseFloat(containerQuantity) || 0}
+              onUpdateParentArea={(newArea) => {
+                if (onUpdateService && roomId !== undefined && article) {
+                  onUpdateService(roomId, serviceType, title, {
+                    area: newArea,
+                    isActive: true,
+                    isMandatory: false,
+                  });
+                }
+              }}
             />
           </div>
         </AlertDialogContent>
