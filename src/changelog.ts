@@ -1,5 +1,5 @@
 // Changelog data - voeg nieuwe entries bovenaan toe
-export const APP_VERSION = "1.4.6";
+export const APP_VERSION = "1.4.7";
 
 export interface ChangelogEntry {
     version: string;
@@ -9,6 +9,13 @@ export interface ChangelogEntry {
 
 export const changelog: ChangelogEntry[] = [
   {
+        version: "1.4.7",
+        date: "2026-04-30",
+        changes: [
+            "LEG PROFIEL: discrepantie-popup als totaal geselecteerde profielen afwijkt van service-aantal, met optie om service automatisch aan te passen",
+        ],
+    },
+    {
         version: "1.4.6",
         date: "2026-04-30",
         changes: [
