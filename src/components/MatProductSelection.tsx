@@ -319,7 +319,7 @@ export function MatProductSelection({ matArticles, onClose, onSelect, onSelectMu
                       
                       {/* Keuze/Vervolg */}
                       <td className="p-3 border-l border-gray-300 text-center">
-                        {hasQuantity || hasLBData ? (
+                        {(hasQuantity || hasLBData) && article.subcategorie !== 'Profielen' ? (
                           <Button
                             onClick={() => {
                               console.log('🔗 Selecteer vervolg product voor:', article.productCode);
