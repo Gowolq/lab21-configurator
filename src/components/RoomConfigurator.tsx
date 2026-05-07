@@ -111,9 +111,14 @@ export function RoomConfigurator({
   
   // Check if this configurator needs product selection
   const needsProductSelection = [
-    "Vloer", 
+    "Vloer",
     "Raamdecoratie"
   ].includes(currentConfigurator);
+
+  // Helpers voor configurator-specifieke veld-zichtbaarheid
+  // Bij Gordijnen: alleen Verdieping + Ruimte tonen, geen vloer-velden
+  const isGordijnenConfigurator = currentConfigurator === "Gordijnen";
+  const isVloerConfigurator = currentConfigurator !== "Raamdecoratie" && currentConfigurator !== "Gordijnen";
   
   // Local state for service search input
   const [serviceSearchInput, setServiceSearchInput] = useState(serviceSearchTerm);
@@ -520,7 +525,8 @@ export function RoomConfigurator({
                       </Select>
                     </div>
 
-                    {/* Type vloerverwarming / Groep - 3 columns (2 columns for Zonwering binnen) */}
+                    {/* Type vloerverwarming / Groep - 3 columns (2 columns for Zonwering binnen) - niet voor Gordijnen */}
+                    {!isGordijnenConfigurator && (
                     <div className={`space-y-2 ${currentConfigurator === "Raamdecoratie" ? "md:col-span-2" : "md:col-span-3"}`}>
                       <Label htmlFor="underfloor-heating-type">
                         {currentConfigurator === "Raamdecoratie" ? (language === 'en' ? 'Group' : 'Groep') : t.roomConfigurator.underfloorHeatingType}
@@ -554,9 +560,10 @@ export function RoomConfigurator({
                         </SelectContent>
                       </Select>
                     </div>
+                    )}
 
                     {/* Uitvoering vloerverwarming - 2 columns */}
-                    {currentConfigurator !== "Raamdecoratie" && (
+                    {isVloerConfigurator && (
                       <div className="space-y-2 md:col-span-2">
                         <Label htmlFor="underfloor-heating-installation">{language === 'nl' ? 'Uitvoering vloerverwarming' : 'Install underfloor heating'}</Label>
                         <Select 
@@ -576,7 +583,7 @@ export function RoomConfigurator({
                     )}
 
                     {/* Bestaande vloer - 2 columns */}
-                    {currentConfigurator !== "Raamdecoratie" && (
+                    {isVloerConfigurator && (
                       <div className="space-y-2 md:col-span-2">
                         <Label htmlFor="old-surface">{t.existingFloor}</Label>
                         <Select 
@@ -615,7 +622,7 @@ export function RoomConfigurator({
                     )}
 
                     {/* Basisvloer - 2 columns */}
-                    {currentConfigurator !== "Raamdecoratie" && (
+                    {isVloerConfigurator && (
                       <div className="space-y-2 md:col-span-2">
                         <Label htmlFor="new-surface">{t.newSurface}</Label>
                         <Select 
@@ -855,8 +862,8 @@ export function RoomConfigurator({
                     )}
                   </div>
 
-                  {/* Second Row: Oppervlakte - only for non-Raamdecoratie */}
-                  {currentConfigurator !== "Raamdecoratie" && (
+                  {/* Second Row: Oppervlakte - alleen voor Vloer-configurator */}
+                  {isVloerConfigurator && (
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
                       {/* Oppervlakte - 1 column */}
                       <div className="space-y-2 md:col-span-1">
@@ -1147,8 +1154,8 @@ export function RoomConfigurator({
                           </Button>
                         </div>
                       </>
-                    ) : (
-                      /* Type vloerverwarming - only for non-Raamdecoratie */
+                    ) : isGordijnenConfigurator ? null : (
+                      /* Type vloerverwarming - alleen voor Vloer-configurator */
                       <div className="space-y-2 md:col-span-3">
                         <Label htmlFor="underfloor-heating-type">{t.roomConfigurator.underfloorHeatingType}</Label>
                         <Select 
@@ -1170,7 +1177,7 @@ export function RoomConfigurator({
                     )}
 
                     {/* Bestaande vloer - 2 columns */}
-                    {currentConfigurator !== "Raamdecoratie" && (
+                    {isVloerConfigurator && (
                       <div className="space-y-2 md:col-span-2">
                         <Label htmlFor="old-surface">{t.existingFloor}</Label>
                         <Select 
@@ -1209,7 +1216,7 @@ export function RoomConfigurator({
                     )}
 
                     {/* Basisvloer - 3 columns */}
-                    {currentConfigurator !== "Raamdecoratie" && (
+                    {isVloerConfigurator && (
                       <div className="space-y-2 md:col-span-3">
                         <Label htmlFor="new-surface">Basisvloer/Jumpax</Label>
                         <Select 
@@ -1251,8 +1258,8 @@ export function RoomConfigurator({
                       </div>
                     )}
 
-                    {/* Oppervlakte - 1 column (only for non-Raamdecoratie) */}
-                    {currentConfigurator !== "Raamdecoratie" && (
+                    {/* Oppervlakte - 1 column - alleen voor Vloer-configurator */}
+                    {isVloerConfigurator && (
                       <div className="space-y-2 md:col-span-1">
                         <Label htmlFor="area">{t.area}</Label>
                         <Input 
