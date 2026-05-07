@@ -1,5 +1,5 @@
 // Changelog data - voeg nieuwe entries bovenaan toe
-export const APP_VERSION = "1.4.8";
+export const APP_VERSION = "1.4.9";
 
 export interface ChangelogEntry {
     version: string;
@@ -9,6 +9,13 @@ export interface ChangelogEntry {
 
 export const changelog: ChangelogEntry[] = [
   {
+        version: "1.4.9",
+        date: "2026-04-30",
+        changes: [
+            "Gordijnen-configurator: alleen Verdieping en Ruimte tonen — Type vloerverwarming, Bestaande vloer, Basisvloer/Jumpax en Oppervlakte zijn verborgen",
+        ],
+    },
+    {
         version: "1.4.8",
         date: "2026-04-30",
         changes: [
