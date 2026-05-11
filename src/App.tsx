@@ -67,6 +67,7 @@ interface Product {
   legpatroon?: string;
   typeVloerverwarming?: string;
   geintegreerdeOndervloer?: string;
+  tienDbNorm?: string; // 10 dB norm: "Ja", "Nee" of "Geen"
   verdieping?: string;
   pakgrootte?: number;
   snijverlies?: number;
