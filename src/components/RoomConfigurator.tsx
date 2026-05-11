@@ -432,8 +432,8 @@ export function RoomConfigurator({
                       {initialData.selectedProduct.typeVloerverwarming && ` / ${t.serviceSection.heatingType}: ${initialData.selectedProduct.typeVloerverwarming}`}
                       {initialData.selectedProduct.geintegreerdeOndervloer && ` / ${t.serviceSection.integratedUnderfloor}: ${initialData.selectedProduct.geintegreerdeOndervloer}`}
                       {initialData.selectedProduct.verdieping && ` / ${t.serviceSection.floor}: ${initialData.selectedProduct.verdieping}`}
-                      {initialData.selectedProduct.brand && ` / ${t.serviceSection.brand}: ${initialData.selectedProduct.brand}`}
                       {initialData.selectedProduct.tienDbNorm && ` / 10 dB norm: ${initialData.selectedProduct.tienDbNorm}`}
+                      {initialData.selectedProduct.brand && ` / ${t.serviceSection.brand}: ${initialData.selectedProduct.brand}`}
                     </>
                   ) : (
                     t.roomConfigurator.productDetailsWillShow
