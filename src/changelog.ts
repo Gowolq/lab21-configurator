@@ -1,5 +1,5 @@
 // Changelog data - voeg nieuwe entries bovenaan toe
-export const APP_VERSION = "1.5.2";
+export const APP_VERSION = "1.5.3";
 
 export interface ChangelogEntry {
     version: string;
@@ -9,6 +9,14 @@ export interface ChangelogEntry {
 
 export const changelog: ChangelogEntry[] = [
   {
+        version: "1.5.3",
+        date: "2026-04-30",
+        changes: [
+            "Kamer-samenvatting na productselectie: '10 dB norm' toegevoegd na Merk (Geïntegreerde ondervloer stond er al)",
+            "Product interfaces (App.tsx, RoomConfigurator.tsx, CustomerArticleList.tsx) ondersteunen nu het tienDbNorm-veld zodat de waarde behouden blijft",
+        ],
+    },
+    {
         version: "1.5.2",
         date: "2026-04-30",
         changes: [
