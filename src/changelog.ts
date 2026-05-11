@@ -1,5 +1,5 @@
 // Changelog data - voeg nieuwe entries bovenaan toe
-export const APP_VERSION = "1.5.3";
+export const APP_VERSION = "1.5.5";
 
 export interface ChangelogEntry {
     version: string;
@@ -9,6 +9,20 @@ export interface ChangelogEntry {
 
 export const changelog: ChangelogEntry[] = [
   {
+        version: "1.5.5",
+        date: "2026-04-30",
+        changes: [
+            "VVE-bestendigheid: bij 'VVE met onderburen = Ja' worden vloeren met Geïntegreerde ondervloer=Ja én 10 dB norm=Nee lichtgrijs en onselecteerbaar getoond ('Niet VVE-bestendig')",
+        ],
+    },
+    {
+        version: "1.5.4",
+        date: "2026-04-30",
+        changes: [
+            "Volgorde in artikelregel: Geïntegreerde ondervloer → 10 dB norm → Merk (Merk weer helemaal achteraan, beide in artikelselectie en kamer-samenvatting)",
+        ],
+    },
+    {
         version: "1.5.3",
         date: "2026-04-30",
         changes: [
