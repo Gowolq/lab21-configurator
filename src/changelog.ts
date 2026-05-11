@@ -1,5 +1,5 @@
 // Changelog data - voeg nieuwe entries bovenaan toe
-export const APP_VERSION = "1.5.0";
+export const APP_VERSION = "1.5.1";
 
 export interface ChangelogEntry {
     version: string;
@@ -9,6 +9,13 @@ export interface ChangelogEntry {
 
 export const changelog: ChangelogEntry[] = [
   {
+        version: "1.5.1",
+        date: "2026-04-30",
+        changes: [
+            "Nieuw veld '10 dB norm' toegevoegd aan de artikelregel (na Merk), met waarden Ja/Nee/Geen — ingevuld op 9 dummy-artikelen als mix",
+        ],
+    },
+    {
         version: "1.5.0",
         date: "2026-04-30",
         changes: [
