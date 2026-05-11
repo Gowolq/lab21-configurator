@@ -1,5 +1,5 @@
 // Changelog data - voeg nieuwe entries bovenaan toe
-export const APP_VERSION = "1.5.5";
+export const APP_VERSION = "1.5.6";
 
 export interface ChangelogEntry {
     version: string;
@@ -8,6 +8,13 @@ export interface ChangelogEntry {
 }
 
 export const changelog: ChangelogEntry[] = [
+  {
+    version: "1.5.6",
+    date: "2026-05-11",
+    changes: [
+      "Volgorde-fix daadwerkelijk doorgekomen: Merk staat nu écht achteraan in zowel de artikelregel als de kamer-samenvatting (eerdere v1.5.4 was niet aangekomen op main)",
+    ],
+  },
   {
         version: "1.5.5",
         date: "2026-04-30",
