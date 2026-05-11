@@ -28,6 +28,7 @@ interface Product {
   legpatroon?: string;
   typeVloerverwarming?: string;
   geintegreerdeOndervloer?: string;
+  tienDbNorm?: string; // 10 dB norm: "Ja", "Nee" of "Geen"
   pakgrootte?: number; // in m²
   snijverlies?: number; // percentage (bijv. 10 voor 10%)
   eenheid?: string; // "M2", "M1", of "Stuk"
@@ -62,6 +63,7 @@ const mockProducts: Product[] = [
     legpatroon: "Rechte stroken",
     typeVloerverwarming: "Gebonden; Gefreesd; Noppen platen",
     geintegreerdeOndervloer: "Nee",
+    tienDbNorm: "Nee",
     pakgrootte: 2.18,
     snijverlies: 10,
     eenheid: "M2",
@@ -81,6 +83,7 @@ const mockProducts: Product[] = [
     legpatroon: "Rechte stroken",
     typeVloerverwarming: "Gebonden; Gefreesd; Noppen platen",
     geintegreerdeOndervloer: "Nee",
+    tienDbNorm: "Nee",
     pakgrootte: 2.18,
     snijverlies: 10
   },
@@ -100,6 +103,7 @@ const mockProducts: Product[] = [
     legpatroon: "Rechte stroken",
     typeVloerverwarming: "Gebonden; Gefreesd; Noppen platen",
     geintegreerdeOndervloer: "Ja",
+    tienDbNorm: "Ja",
     pakgrootte: 2.18,
     snijverlies: 10,
     aanbevolen: true
@@ -118,6 +122,7 @@ const mockProducts: Product[] = [
     legpatroon: "Rechte stroken",
     typeVloerverwarming: "Gebonden; Gefreesd; Noppen platen",
     geintegreerdeOndervloer: "Ja",
+    tienDbNorm: "Ja",
     pakgrootte: 2.18,
     snijverlies: 10
   },
@@ -137,6 +142,7 @@ const mockProducts: Product[] = [
     legpatroon: "Visgraat",
     typeVloerverwarming: "Gebonden; Gefreesd; Noppen platen",
     geintegreerdeOndervloer: "Ja",
+    tienDbNorm: "Geen",
     pakgrootte: 2.18,
     snijverlies: 15,
     aanbevolen: true
@@ -155,6 +161,7 @@ const mockProducts: Product[] = [
     legpatroon: "Visgraat",
     typeVloerverwarming: "Gebonden; Gefreesd; Noppen platen",
     geintegreerdeOndervloer: "Ja",
+    tienDbNorm: "Geen",
     pakgrootte: 2.18,
     snijverlies: 15
   },
@@ -172,6 +179,7 @@ const mockProducts: Product[] = [
     legpatroon: "Tegel",
     typeVloerverwarming: "Gebonden; Gefreesd; Noppen platen",
     geintegreerdeOndervloer: "Ja",
+    tienDbNorm: "Geen",
     pakgrootte: 2.18,
     snijverlies: 20
   },
@@ -206,6 +214,7 @@ const mockProducts: Product[] = [
     legpatroon: "Rechte stroken",
     typeVloerverwarming: "Gebonden; Gefreesd; Noppen platen",
     geintegreerdeOndervloer: "Ja",
+    tienDbNorm: "Ja",
     pakgrootte: 2.18,
     snijverlies: 10,
     aanbevolen: true
@@ -243,6 +252,7 @@ const mockProducts: Product[] = [
     legpatroon: "Visgraat",
     typeVloerverwarming: "Gebonden; Gefreesd; Noppen platen",
     geintegreerdeOndervloer: "Nee",
+    tienDbNorm: "Nee",
     pakgrootte: 2.18,
     snijverlies: 15
   },
@@ -1469,7 +1479,7 @@ export function ProductArticleSelection({
                             <td className="p-3 border-r border-gray-300 text-sm align-top">
                               <div className="space-y-2">
                                 <div className="font-medium">{product.code} - {product.name}</div>
-                                {(product.hoofdcategorie || product.subcategorie || product.legmethode || product.legpatroon || product.typeVloerverwarming || product.geintegreerdeOndervloer) && (
+                                {(product.hoofdcategorie || product.subcategorie || product.legmethode || product.legpatroon || product.typeVloerverwarming || product.geintegreerdeOndervloer || product.tienDbNorm) && (
                                   <div className="text-xs text-gray-600">
                                     {[
                                       product.hoofdcategorie && `${t.roomConfigurator.mainCategory}: ${product.hoofdcategorie}`,
@@ -1478,7 +1488,8 @@ export function ProductArticleSelection({
                                       product.legpatroon && `${t.serviceSection.pattern}: ${translateValue('legpatroon', product.legpatroon)}`,
                                       product.typeVloerverwarming && `${t.serviceSection.heatingType}: ${translateValue('typeVloerverwarming', product.typeVloerverwarming)}`,
                                       product.geintegreerdeOndervloer && `${t.serviceSection.integratedUnderfloor}: ${translateValue('geintegreerdeOndervloer', product.geintegreerdeOndervloer)}`,
-                                      product.brand && `${t.serviceSection.brand}: ${product.brand}`
+                                      product.brand && `${t.serviceSection.brand}: ${product.brand}`,
+                                      product.tienDbNorm && `10 dB norm: ${product.tienDbNorm}`
                                     ].filter(Boolean).join(' / ')}
                                   </div>
                                 )}
