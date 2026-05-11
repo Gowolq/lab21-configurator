@@ -1,5 +1,5 @@
 // Changelog data - voeg nieuwe entries bovenaan toe
-export const APP_VERSION = "1.4.9";
+export const APP_VERSION = "1.5.0";
 
 export interface ChangelogEntry {
     version: string;
@@ -9,6 +9,13 @@ export interface ChangelogEntry {
 
 export const changelog: ChangelogEntry[] = [
   {
+        version: "1.5.0",
+        date: "2026-04-30",
+        changes: [
+            "Vloer-configurator: nieuw veld 'Gewenst patroon' (Hongaarse punt / Weense punt) tussen Bestaande vloer en Basisvloer — alleen zichtbaar als het gekozen product die patronen ondersteunt",
+        ],
+    },
+    {
         version: "1.4.9",
         date: "2026-04-30",
         changes: [
