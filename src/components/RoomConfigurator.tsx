@@ -70,6 +70,7 @@ interface Room {
   windowGroups?: WindowGroup[]; // For window decoration configurator - additional groups
   underfloorHeatingType?: string; // Type vloerverwarming
   underfloorHeatingInstallation?: string; // Aanleggen vloerverwarming
+  selectedLegpatroon?: string; // Gewenst patroon (bv. Hongaarse punt / Weense punt)
 }
 
 interface RoomConfiguratorProps {
@@ -119,6 +120,15 @@ export function RoomConfigurator({
   // Bij Gordijnen: alleen Verdieping + Ruimte tonen, geen vloer-velden
   const isGordijnenConfigurator = currentConfigurator === "Gordijnen";
   const isVloerConfigurator = currentConfigurator !== "Raamdecoratie" && currentConfigurator !== "Gordijnen";
+
+  // Gewenst patroon — alleen tonen als het geselecteerde product Hongaarse of Weense punt ondersteunt
+  const availableLegpatronen: string[] = (() => {
+    const lp = initialData?.selectedProduct?.legpatroon;
+    if (!lp) return [];
+    const candidates = ["Hongaarse punt", "Weense punt"];
+    return candidates.filter((c) => lp.toLowerCase().includes(c.toLowerCase()));
+  })();
+  const showLegpatroonSelect = isVloerConfigurator && availableLegpatronen.length > 0;
   
   // Local state for service search input
   const [serviceSearchInput, setServiceSearchInput] = useState(serviceSearchTerm);
@@ -616,6 +626,26 @@ export function RoomConfigurator({
                             <SelectItem value="zandsteen">{t.existingFloors.zandsteen}</SelectItem>
                             <SelectItem value="zeilVinylNovilonLos">{t.existingFloors.zeilVinylNovilonLos}</SelectItem>
                             <SelectItem value="zeilVinylNovilonVerlijmd">{t.existingFloors.zeilVinylNovilonVerlijmd}</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
+
+                    {/* Gewenst patroon - alleen als product Hongaarse/Weense punt ondersteunt */}
+                    {showLegpatroonSelect && (
+                      <div className="space-y-2 md:col-span-2">
+                        <Label htmlFor="desired-pattern">{language === 'en' ? 'Desired pattern' : 'Gewenst patroon'}</Label>
+                        <Select
+                          value={initialData?.selectedLegpatroon || ""}
+                          onValueChange={(value) => onUpdate?.({ selectedLegpatroon: value })}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder={t.select} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {availableLegpatronen.map((p) => (
+                              <SelectItem key={p} value={p}>{p}</SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                       </div>
@@ -1210,6 +1240,26 @@ export function RoomConfigurator({
                             <SelectItem value="zandsteen">{t.existingFloors.zandsteen}</SelectItem>
                             <SelectItem value="zeilVinylNovilonLos">{t.existingFloors.zeilVinylNovilonLos}</SelectItem>
                             <SelectItem value="zeilVinylNovilonVerlijmd">{t.existingFloors.zeilVinylNovilonVerlijmd}</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
+
+                    {/* Gewenst patroon - alleen als product Hongaarse/Weense punt ondersteunt */}
+                    {showLegpatroonSelect && (
+                      <div className="space-y-2 md:col-span-2">
+                        <Label htmlFor="desired-pattern">{language === 'en' ? 'Desired pattern' : 'Gewenst patroon'}</Label>
+                        <Select
+                          value={initialData?.selectedLegpatroon || ""}
+                          onValueChange={(value) => onUpdate?.({ selectedLegpatroon: value })}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder={t.select} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {availableLegpatronen.map((p) => (
+                              <SelectItem key={p} value={p}>{p}</SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                       </div>
