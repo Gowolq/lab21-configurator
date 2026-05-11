@@ -2554,6 +2554,7 @@ export default function App() {
             language={language}
             isModal={true}
             currentConfigurator={selectedConfigurators[currentConfiguratorIndex]}
+            apartmentWithVVE={relationData.apartmentWithVVE}
           />
         </DialogContent>
       </Dialog>
