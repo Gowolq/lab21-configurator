@@ -27,6 +27,7 @@ interface Product {
   legpatroon?: string;
   typeVloerverwarming?: string;
   geintegreerdeOndervloer?: string;
+  tienDbNorm?: string; // 10 dB norm: "Ja", "Nee" of "Geen"
   verdieping?: string;
 }
 
@@ -432,6 +433,7 @@ export function RoomConfigurator({
                       {initialData.selectedProduct.geintegreerdeOndervloer && ` / ${t.serviceSection.integratedUnderfloor}: ${initialData.selectedProduct.geintegreerdeOndervloer}`}
                       {initialData.selectedProduct.verdieping && ` / ${t.serviceSection.floor}: ${initialData.selectedProduct.verdieping}`}
                       {initialData.selectedProduct.brand && ` / ${t.serviceSection.brand}: ${initialData.selectedProduct.brand}`}
+                      {initialData.selectedProduct.tienDbNorm && ` / 10 dB norm: ${initialData.selectedProduct.tienDbNorm}`}
                     </>
                   ) : (
                     t.roomConfigurator.productDetailsWillShow
