@@ -62,7 +62,7 @@ const mockProducts: Product[] = [
     subcategorie: "PVC",
     legpatroon: "Rechte stroken",
     typeVloerverwarming: "Gebonden; Gefreesd; Noppen platen",
-    geintegreerdeOndervloer: "Nee",
+    geintegreerdeOndervloer: "Ja",
     tienDbNorm: "Nee",
     pakgrootte: 2.18,
     snijverlies: 10,
@@ -82,7 +82,7 @@ const mockProducts: Product[] = [
     subcategorie: "PVC",
     legpatroon: "Rechte stroken",
     typeVloerverwarming: "Gebonden; Gefreesd; Noppen platen",
-    geintegreerdeOndervloer: "Nee",
+    geintegreerdeOndervloer: "Ja",
     tienDbNorm: "Nee",
     pakgrootte: 2.18,
     snijverlies: 10
@@ -251,7 +251,7 @@ const mockProducts: Product[] = [
     subcategorie: "PVC",
     legpatroon: "Visgraat",
     typeVloerverwarming: "Gebonden; Gefreesd; Noppen platen",
-    geintegreerdeOndervloer: "Nee",
+    geintegreerdeOndervloer: "Ja",
     tienDbNorm: "Nee",
     pakgrootte: 2.18,
     snijverlies: 15
