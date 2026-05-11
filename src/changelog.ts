@@ -1,5 +1,5 @@
 // Changelog data - voeg nieuwe entries bovenaan toe
-export const APP_VERSION = "1.5.6";
+export const APP_VERSION = "1.5.7";
 
 export interface ChangelogEntry {
     version: string;
@@ -8,6 +8,13 @@ export interface ChangelogEntry {
 }
 
 export const changelog: ChangelogEntry[] = [
+  {
+    version: "1.5.7",
+    date: "2026-05-11",
+    changes: [
+      "VVE-blokkering hersteld in artikelselectie: bij 'VVE met onderburen = Ja' worden producten met Geïntegreerde ondervloer=Ja én 10 dB norm=Nee weer lichtgrijs en niet-selecteerbaar (logica was per ongeluk verdwenen tijdens v1.5.4 volgorde-fix)",
+    ],
+  },
   {
     version: "1.5.6",
     date: "2026-05-11",
