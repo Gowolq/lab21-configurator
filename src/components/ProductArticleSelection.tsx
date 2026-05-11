@@ -45,6 +45,7 @@ interface ProductArticleSelectionProps {
   language: string;
   isModal?: boolean;
   currentConfigurator?: string; // The active configurator to filter products
+  apartmentWithVVE?: string; // "apartmentWithVVE" = VVE met onderburen actief
 }
 
 const mockProducts: Product[] = [
@@ -794,9 +795,18 @@ export function ProductArticleSelection({
   onOpenProductDetail,
   language,
   isModal = false,
-  currentConfigurator = "Vloer" // Default to Vloer
+  currentConfigurator = "Vloer", // Default to Vloer
+  apartmentWithVVE
 }: ProductArticleSelectionProps) {
   const t = useTranslation(language);
+
+  // VVE-blokkering: bij VVE met onderburen mogen vloeren met
+  // geïntegreerde ondervloer = Ja én 10 dB norm = Nee niet gekozen worden
+  const isVveActive = apartmentWithVVE === "apartmentWithVVE";
+  const isProductVveBlocked = (product: Product): boolean => {
+    if (!isVveActive) return false;
+    return product.geintegreerdeOndervloer === "Ja" && product.tienDbNorm === "Nee";
+  };
   
   // Helper function to translate product property values
   const translateValue = (category: keyof typeof t.productValues, value: string): string => {
@@ -1457,10 +1467,12 @@ export function ProductArticleSelection({
                         </tr>
                       </thead>
                       <tbody>
-                        {filteredProducts.map((product, index) => (
-                          <tr 
+                        {filteredProducts.map((product, index) => {
+                          const vveBlocked = isProductVveBlocked(product);
+                          return (
+                          <tr
                             key={product.id}
-                            className="border-t border-gray-300 hover:bg-gray-50"
+                            className={`border-t border-gray-300 ${vveBlocked ? 'bg-gray-100 text-gray-400' : 'hover:bg-gray-50'}`}
                             style={{ minHeight: '120px' }}
                           >
                             <td className="p-3 border-r border-gray-300 align-top">
@@ -1499,15 +1511,32 @@ export function ProductArticleSelection({
                               {product.code}
                             </td>
                             <td className="p-3 text-sm align-top">
-                              <Button
-                                onClick={() => handleProductSelect(product)}
-                                className="bg-[#2d4724] hover:bg-[#1f3319] text-white px-4 py-2 h-8 text-xs"
-                              >
-                                {language === 'en' ? 'Select' : 'Selecteer'}
-                              </Button>
+                              {vveBlocked ? (
+                                <div className="flex flex-col gap-1">
+                                  <Button
+                                    disabled
+                                    className="bg-gray-300 text-gray-500 px-4 py-2 h-8 text-xs cursor-not-allowed"
+                                  >
+                                    {language === 'en' ? 'Not allowed' : 'Niet toegestaan'}
+                                  </Button>
+                                  <span className="text-[10px] text-gray-500 italic">
+                                    {language === 'en'
+                                      ? 'Not VVE-compliant'
+                                      : 'Niet VVE-bestendig'}
+                                  </span>
+                                </div>
+                              ) : (
+                                <Button
+                                  onClick={() => handleProductSelect(product)}
+                                  className="bg-[#2d4724] hover:bg-[#1f3319] text-white px-4 py-2 h-8 text-xs"
+                                >
+                                  {language === 'en' ? 'Select' : 'Selecteer'}
+                                </Button>
+                              )}
                             </td>
                           </tr>
-                        ))}
+                          );
+                        })}
                       </tbody>
                     </table>
                   </div>
